@@ -10,13 +10,31 @@ const mapRoutes = require('./routes/mapRoutes');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log('MongoDB Error:', err));
+// --- NEW STRICT MONGODB CONNECTION CODE ---
+// 1. Force Mongoose to throw real errors instantly instead of buffering
+mongoose.set('bufferCommands', false);
+
+// 2. Connect with strict timeout rules to catch hangs
+mongoose.connect(process.env.MONGO_URI, {
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+})
+  .then(() => console.log('MongoDB Connected Successfully!'))
+  .catch(err => console.log('MongoDB Initial Error:', err));
+
+// 3. Track if the connection drops in the background
+mongoose.connection.on('error', err => {
+  console.error('MongoDB Background Runtime Error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB mysteriously disconnected!');
+});
+// ------------------------------------------
 
 app.use('/users', userRoutes);
 app.use('/captains', captainRoutes);
