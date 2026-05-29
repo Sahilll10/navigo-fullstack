@@ -1,15 +1,24 @@
-# 🚗 NaviGo - Your Personal Ride-Hailing Platform
+# 🧭 NaviGO
 
-> Hey there! Welcome to NaviGo - a ride-hailing app that's like Uber or Ola, but built by you! This guide will walk you through everything, even if you're completely new to coding. Don't worry, we've got your back! 😊
+NaviGO is a high-performance, full-stack rental and booking platform engineered to provide real-time route calculation and seamless dispatch matching between users and fleet captains. Built with scalability in mind, it leverages a strictly typed RESTful micro-architecture and live geospatial data.
 
-
-### Live Deployments
+### 🚀 Live Deployments
 * **Frontend Application (Vercel):** [https://navigo-one.vercel.app](https://navigo-one.vercel.app)
 * **Backend API (Render):** [https://navigo-gxby.onrender.com](https://navigo-gxby.onrender.com)
 
 ---
 
-### System Architecture
+### ✨ Key Engineering Features
+
+* **Role-Based Access Control (RBAC):** Dual-pipeline authentication system strictly separating User and Captain data models. Secures API endpoints using stateless JSON Web Tokens (JWT) mapped to context-aware protected frontend routes.
+* **Geospatial Routing Engine:** Integrates the OpenStreetMap API to dynamically calculate precise polyline routes, distances, and optimal navigation paths between dynamic coordinate pairs.
+* **Cryptographic Resilience:** Implements pure-JavaScript `bcryptjs` hashing for user credentials, bypassing native C++ compilation bottlenecks to guarantee 100% thread safety across dynamic cloud deployment environments.
+* **Schema-Driven Data Integrity:** Utilizes Mongoose Object Data Modeling (ODM) to enforce strict schema validation, unique indexing, and efficient querying on a highly available MongoDB Atlas cluster.
+* **Asynchronous State Management:** Frontend UI state is globally managed via React's Context API, reducing prop-drilling and ensuring instantaneous UI updates across the booking lifecycle.
+
+---
+
+### 🏗️ System Architecture
 
 The following diagram illustrates the strict data flow from client interaction to database storage and external API routing.
 
