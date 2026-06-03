@@ -1,3 +1,4 @@
+// Developer: Sahil Kumar (3252)
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -10,11 +11,22 @@ const mapRoutes = require('./routes/mapRoutes');
 
 const app = express();
 
-app.use(cors({ origin: '*' }));
+// --- HARDENED CORS CONFIGURATION ---
+app.use(cors({
+  origin: ['https://navigo-one.vercel.app', 'http://localhost:3000'], // Whitelist Vercel and local development
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allow Preflight (OPTIONS)
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
+// Explicitly handle all preflight requests across all routes
+app.options('*', cors());
+// -----------------------------------
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// --- NEW STRICT MONGODB CONNECTION CODE ---
+// --- STRICT MONGODB CONNECTION CODE ---
 // 1. Force Mongoose to throw real errors instantly instead of buffering
 mongoose.set('bufferCommands', false);
 
